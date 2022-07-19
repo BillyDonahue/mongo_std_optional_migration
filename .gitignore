@@ -1,0 +1,6 @@
+.DS_Store
+*.swp
+clang-tutor-build/**
+llvm-build/**
+llvm-install/**
+mongo

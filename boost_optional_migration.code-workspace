@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"name": "boost_optional_migration",
+			"path": "."
+		},
+		{
+			"name": "mongo",
+			"path": "../mongo"
+		},
+		{
+			"name": "optional_migration_clang_tool",
+			"path": "optional_migration_clang_tool"
+		},
+		{
+			"name": "llvm-project",
+			"path": "llvm-project"
+		},
+		{
+			"name": "clang-tutor",
+			"path": "clang-tutor"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.idl": "cpp"
+		},
+		"git.ignoreLimitWarning": true
+	}
+}
