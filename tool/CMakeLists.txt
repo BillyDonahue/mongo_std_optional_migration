@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.13.4)
 project(mongo-clang-tidy)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # SET CLANG INSTALLATION DIR
 if(DEFINED Clang_ROOT)
   set(MCT_CLANG_PACKAGE_DIR "${Clang_ROOT}/../../..")

@@ -9,41 +9,29 @@ build="${proj_root}/tool-build"
 
 set -e
 
-mkdir -p "$build"
-pushd "$build"
-
 function build() {
+    pushd "$build"
     cmake -G Ninja -DMCT_Clang_INSTALL_DIR="$Clang_DIR" "${MONGO_CLANG_TIDY_DIR}"
     ninja
+    popd
 }
 
 function test() {
-    cat <<EOF >input.cpp
-#include <boost/optional.hpp>
-
-struct X { void get() const; };
-
-void foo(const boost::optional<int>& oi) {
-  auto oip = &oi;
-  X{}.get();  // unchanged
-  oi.get();  // change to oi.value()
-  oip->get();  // change to oip->get()
-  oip->is_initialized();  // change to oip->has_value()
-  oi.is_initialized();  // change to oi.has_value()
-}
-EOF
+    pushd "$build"
+    cmake ../tool-test -B tool-test-build -G Ninja
+    ninja -C tool-test-build
     cmd=(
         "${Clang_DIR}/bin/clang-tidy"
         --load "${build}/lib/libClangTidyMongoStdOptionalMigrationModule.dylib"
-        -checks='mongo-std-optional-migration-*'
-        "input.cpp"
-        --
-        -I "${proj_root}/mongo/src/third_party/boost"
+        -checks='-*,mongo-std-optional-migration-*'
+        "../tool-test/input.cpp"
+        -p tool-test-build
     )
     echo "Running: ${cmd[@]}"
     "${cmd[@]}"
     popd
 }
 
+mkdir -p "$build"
 build
 test
